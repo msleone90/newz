@@ -2,6 +2,13 @@ import requests
 import selenium
 import json
 from bs4 import BeautifulSoup
+from forecast import formatWeather
+
+def __checkRain(rain):
+    if "rain" not in rain:
+        return ""
+    else:
+        return rain
 
 def getWeather(city, key):
     try:
@@ -17,10 +24,15 @@ def formatData(response):
 
     # Build forecast widget data structure
     forecast = {
-        "currentTemp": str(round(response['main']['temp']))+'°',
+        "currentTemp": str(round(response['main']['temp']))+' °F',
         "weather": response['weather'][0]['main'],
-        "location": response['name'] + ", " + response['sys']['country'],
-        "wind": str(response['wind']['speed']) + " mph"
+        "location": response['name'] + ", + " + response['sys']['country'],
+        "wind": str(response['wind']['speed']) + " mph",
+        "code": str(response['weather'][0]['id']),
+        "humidity": str(round(response['main']['humidity'])) + " HUM",
+        "rain": __checkRain(response)
     }
 
-    return forecast 
+    forecast = formatWeather(forecast)
+    return forecast
+
