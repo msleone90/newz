@@ -29,7 +29,7 @@ def formatData(response):
         "location": response['name'] + ", + " + response['sys']['country'],
         "wind": str(response['wind']['speed']) + " mph",
         "code": str(response['weather'][0]['id']),
-        "humidity": str(round(response['main']['humidity'])) + " HUM",
+        "humidity": str(round(response['main']['humidity'])) + "% HUM",
         "rain": __checkRain(response)
     }
 

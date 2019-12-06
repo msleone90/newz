@@ -2,12 +2,6 @@ import requests
 import selenium
 from bs4 import BeautifulSoup
 
-def formatLink(link):
-    link = link.replace('/url?q=', "| ")
-    link = link.split("&", 1)[0]
-
-    return link
-
 def formatArticleList(title, source, link):
     i = 0
     length = 120
@@ -29,22 +23,22 @@ def formatArticleList(title, source, link):
 def getArticles(city):
     article_list = []
 
-    url = 'https://google.com/search?q=' + city + '&tbm=nws'
+    url = 'https://news.search.yahoo.com/search;?p=' + city
     source = requests.get(url, timeout=5)
     plain_text = source.text
     soup = BeautifulSoup(plain_text, "html5lib")
 
-    articles = soup.findAll('div', {'class': 'g'})
+    articles = soup.findAll('div', {'class': 'NewsArticle'})
     
     i = 0
     for item in articles:
         if i < 3:
-            h3 = item.find('h3', attrs={'class':'r'})
-            title = h3.find('a')
-            source = item.find('div', attrs={'class':'slp'}).text.split("-", 1)[0].rstrip()
-            link = formatLink(title['href'])
+            title = item.find('a', attrs={'class':'thmb'})['title']
+            source = item.find('span', attrs={'class':'mr-5'}).text
+            h4 = item.find('h4', attrs={'class':'fz-16'})
+            link = h4.find('a')['href']
 
-            article = formatArticleList(title.text, source, link)
+            article = formatArticleList(title, source, "| " + link)
             article_list.append(article)
 
             i += 1
