@@ -8,12 +8,17 @@ Requirements: requests, BeautifulSoup, selenium
 '''
 
 from bs4 import BeautifulSoup
+import geocoder
 import weather
 import requests
 import json
 import articles
 from newzconfig import * 
 from finance import getStockData
+
+def getLocation():
+      g = geocoder.ip('me')
+      return g.city
 
 def formatWeatherStockSection(forecast, stocks):
       ws_section = ''
@@ -33,14 +38,7 @@ def formatWeatherStockSection(forecast, stocks):
 
       return ws_section
 
-response = weather.getWeather(city, weather_key)
-forecast = weather.formatData(response)
-
-stock_data = getStockData(stock_list)
-
-response1 = articles.getArticles(city)
-
-ws_section = formatWeatherStockSection(forecast, stock_data)
+city = getLocation()
 
 print("""  
   _   _  ______ __          __ ______
@@ -52,29 +50,39 @@ print("""
  """)
 
 print("\n Today's Newz: " + city)
+
+response = weather.getWeather(city, weather_key)
+forecast = weather.formatData(response)
+
+stock_data = getStockData(stock_list)
+
+articles = articles.getArticles(city)
+
+ws_section = formatWeatherStockSection(forecast, stock_data)
+
 print("""
-┌────────────────────────────────┬──────────────────────────────────────────────────────────────────────────────────────┐
+-------------------------------------------------------------------------------------------------------------------------
 | Local Weather                  |  Finance                                                                             |
-|────────────────────────────────|──────────────────────────────────────────────────────────────────────────────────────|
+-------------------------------------------------------------------------------------------------------------------------
 """+ws_section+"""
-|───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────|
+-------------------------------------------------------------------------------------------------------------------------
 | Headlines                                                                                                             |
-|───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────|
-"""+str(response1[0][0])+"""                                                                                          
+-------------------------------------------------------------------------------------------------------------------------
+"""+str(articles[0][0])+"""                                                                                          
 |                                                                                                                       |
-"""+str(response1[0][1])+"""                                                                                          
-|                                                                                                                       |
-|-----------------------------------------------------------------------------------------------------------------------|
-"""+str(response1[1][0])+"""                                                                                          
-|                                                                                                                       |
-"""+str(response1[1][1])+"""                                                                                          
+"""+str(articles[0][1])+"""                                                                                          
 |                                                                                                                       |
 |-----------------------------------------------------------------------------------------------------------------------|
-"""+str(response1[2][0])+"""                                                                                          
+"""+str(articles[1][0])+"""                                                                                          
 |                                                                                                                       |
-"""+str(response1[2][1])+"""                                                                                          
+"""+str(articles[1][1])+"""                                                                                          
+|                                                                                                                       |
+|-----------------------------------------------------------------------------------------------------------------------|
+"""+str(articles[2][0])+"""                                                                                          
+|                                                                                                                       |
+"""+str(articles[2][1])+"""                                                                                          
 |                                                                                                                       |
 |                                                                                                                       |
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+-------------------------------------------------------------------------------------------------------------------------
 """)
                                 
