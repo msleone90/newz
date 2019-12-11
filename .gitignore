@@ -109,5 +109,8 @@ venv.bak/
 # TODO
 TODO.txt
 
-#newzconfig
+# newzconfig
 newzconfig.py
+
+# requirements
+requirements.txt
