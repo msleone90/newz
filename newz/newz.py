@@ -3,11 +3,12 @@
 Author: Michael Leone 
 git: github.com/msleone90
 mail: msleone90@gmail.com
-Requirements: requests, BeautifulSoup, selenium, geocoder
+Requirements: requests, BeautifulSoup, selenium, geocoder, click
 
 '''
 
 from bs4 import BeautifulSoup
+import click
 import geocoder
 import newz.weather as weather
 import requests
@@ -40,9 +41,14 @@ def formatWeatherStockSection(forecast, stocks):
 
       return ws_section
 
-def run():
-      # Pull in city information
-      city = getLocation()
+@click.command()
+@click.argument('city', required = False)
+def run(city):
+      """ Get local news straight to the terminal """
+
+      # Pull in city information if not specified
+      if not city:
+            city = getLocation()
 
       # Print header
       print("""  
