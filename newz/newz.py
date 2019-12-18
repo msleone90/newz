@@ -3,16 +3,17 @@
 Author: Michael Leone 
 git: github.com/msleone90
 mail: msleone90@gmail.com
-Requirements: requests, BeautifulSoup, selenium, geocoder, click
+Requirements: requests, BeautifulSoup, selenium, geocoder, click, json, time
 
 '''
 
 from bs4 import BeautifulSoup
 import click
 import geocoder
-import newz.weather as weather
 import requests
 import json
+from datetime import datetime
+import newz.weather as weather
 import newz.articles as articles
 from newz.newzconfig import * 
 from newz.finance import getStockData
@@ -67,7 +68,7 @@ def run(city):
       forecast = weather.formatData(response)
 
       # Grab stock data
-      stock_data = getStockData(stock_list)
+      stock_data = getStockData()
 
       # Pull in top three local news stories from Yahoo
       stories = articles.getArticles(city)

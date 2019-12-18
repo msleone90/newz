@@ -1,8 +1,8 @@
-import datetime
-import time
-from yahoofinancials import YahooFinancials
+import bs4
+import requests
+from bs4 import BeautifulSoup
 
-def checkSectionLength(section):
+def _checkSectionLength(section):
     if len(section) > 28:
         diff = len(section) - 28
         section = section[:-(diff + 2)] + ".. "
@@ -10,7 +10,7 @@ def checkSectionLength(section):
     return section
 
 
-def formatStockTitleSection(stock_dict):
+def _formatStockTitleSection(stock_dict):
     length = 28
     section_break = "| "
     stock_title_section = ""
@@ -19,7 +19,7 @@ def formatStockTitleSection(stock_dict):
     for key in stock_dict:
         stock_section = section_break + stock_dict[key]['name']
 
-        stock_section = checkSectionLength(stock_section)
+        stock_section = _checkSectionLength(stock_section)
 
         i = 0
         for i in range(length - len(stock_section) + 1):
@@ -33,7 +33,7 @@ def formatStockTitleSection(stock_dict):
 
     return stock_title_section
 
-def formatStockPriceSection(stock_dict):
+def _formatStockPriceSection(stock_dict):
     length = 28
     section_break = "| "
     stock_price_section = "| Price:                     | Price:                     | Price:                     |\n"
@@ -55,7 +55,7 @@ def formatStockPriceSection(stock_dict):
 
     return stock_price_section
 
-def formatStockChangeSection(stock_dict):
+def _formatStockChangeSection(stock_dict):
     length = 28
     section_break = "| "
     stock_title_section = "| Change(%):                 | Change(%):                 | Change(%):                 |\n"
@@ -77,22 +77,42 @@ def formatStockChangeSection(stock_dict):
     return stock_title_section
         
 
-def getStockData(stock_list):
+def getStockData():
+    stock_item = {}
     stock_dict = {}
 
-    yahoo_financials = YahooFinancials(stock_list)
-    stocks = yahoo_financials.get_stock_price_data()
+    r = requests.get('https://finance.yahoo.com/')
+    soup = bs4.BeautifulSoup(r.text, 'html5lib')
+    stocks = soup.find_all('li', {'class': 'Bxz(bb)'})
 
-    for item in stock_list:
-        stock_dict[item.replace("^", '')] = {
-            "name": stocks[item]['shortName'], 
-            "price": stocks[item]['regularMarketPrice'], 
-            "change-points": round(stocks[item]['regularMarketChange'], 2), 
-            "change-percent": round(stocks[item]['regularMarketChangePercent'], 4)
+    i = 0
+    for stock in stocks:
+        if i < 3:
+            stock_item['name'] = stock.find('a')['title']
+            spans = stock.find_all('span')
+            
+            j = 0
+            for span in spans:
+                if j < 1:
+                    stock_item['price'] = span.text
+                else:
+                    stock_item['change-points'] = span.text
+                    stock_item['change-percent'] = span.text
+                j += 1
+        else:
+            break
+            
+        stock_dict[stock_item['name']] = {
+            "name": stock_item['name'], 
+            "price": stock_item['price'], 
+            "change-points": stock_item['change-points'], 
+            "change-percent": stock_item['change-percent']
         }
 
-    stock_title_section = formatStockTitleSection(stock_dict)
-    stock_price_section = formatStockPriceSection(stock_dict)
-    stock_change_section = formatStockChangeSection(stock_dict)
+        i += 1
+
+    stock_title_section = _formatStockTitleSection(stock_dict)
+    stock_price_section = _formatStockPriceSection(stock_dict)
+    stock_change_section = _formatStockChangeSection(stock_dict)
 
     return stock_title_section + stock_price_section + stock_change_section
