@@ -15,10 +15,10 @@ def __formatSpacing(details):
     return spaces
 
 def __formatRain(rain):
-    if not rain:
-        return "0.0 in | 0%"
-    else:
-        return "It gone rain!!!"
+	if not rain:
+			return "0.0 in."
+	else:
+			return str(rain['rain']['1h']) + " in."
 
 def __buildWeatherSection(code, forecast):
     weather_section =''

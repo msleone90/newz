@@ -1,24 +1,29 @@
+"""Module to build out weather section."""
 import requests
-import selenium
-import json
-from bs4 import BeautifulSoup
 from newz.forecast import formatWeather
 
-def __checkRain(rain):
+class ResponseNotFound(Exception):
+    """Raised when a response is not returned from API call."""
+    pass
+
+def _check_rain(rain):
+    """Checks if it is raining in searched city."""
     if "rain" not in rain:
         return ""
     else:
         return rain
 
-def getWeather(city, key):
+def get_weather(city, key):
+    """Pulls response data from openweathermap API."""
     try:
-        url = 'http://api.openweathermap.org/data/2.5/weather?q=Atlanta&units=Imperial&appid=' + key
+        url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=Imperial&appid=' + key
         response = requests.get(url)
-    except:
+    except ResponseNotFound:
         print("Unable to return a response")
     return response
 
-def formatData(response):
+def format_data(response):
+    """Formats response data into weather dictionary."""
     forecast = {}
     response = response.json()
 
@@ -30,9 +35,8 @@ def formatData(response):
         "wind": str(response['wind']['speed']) + " mph",
         "code": str(response['weather'][0]['id']),
         "humidity": str(round(response['main']['humidity'])) + "% HUM",
-        "rain": __checkRain(response)
+        "rain": _check_rain(response)
     }
 
     forecast = formatWeather(forecast)
     return forecast
-
