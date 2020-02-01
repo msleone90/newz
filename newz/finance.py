@@ -56,13 +56,16 @@ def _formatStockPriceSection(stock_dict):
     return stock_price_section
 
 def _formatStockChangeSection(stock_dict):
-    length = 28
+    length = 43
     section_break = "| "
     stock_title_section = "| Change(%):                 | Change(%):                 | Change(%):                 |\n"
     section_space = "|                            |                            |                            |"
     
     for key in stock_dict:
-        stock_section = section_break + str(stock_dict[key]['change-points']) + "(" + str(stock_dict[key]['change-percent']) + ")"
+        if "-" in str(stock_dict[key]['change-percent']):
+            stock_section = section_break + "(\033[38;5;196m" + str(stock_dict[key]['change-percent']) + "\033[0m)"
+        else:
+            stock_section = section_break + "(\033[38;5;118m" + str(stock_dict[key]['change-percent']) + "\033[0m)"
 
         i = 0
         for i in range(length - len(stock_section) + 1):
