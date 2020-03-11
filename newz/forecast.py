@@ -1,27 +1,28 @@
+"""Module to obtain weather forecast."""
+import json
 import requests
 import selenium
-import json
 from bs4 import BeautifulSoup
 
-def __formatSpacing(details):
+def _format_spacing(details):
+    """Formats spacing to build weather section."""
     length = 19
     spaces = ''
 
-    i = 0
     if len(details) < length:
         for i in range(length - len(details) - 1):
             spaces += " "
-    
     return spaces
 
-def __formatRain(rain):
+def _format_rain(rain):
 	if not rain:
 			return "0.0 in."
 	else:
 			return str(rain['rain']['1h']) + " in."
 
-def __buildWeatherSection(code, forecast):
-    weather_section =''
+def _build_weather_section(code, forecast):
+    """Sets weather forecast ASCII for section."""
+    weather_section = ''
 
     weather_dict = {
         'Unknown': (
@@ -160,17 +161,18 @@ def __buildWeatherSection(code, forecast):
     }
 
     weather_list = weather_dict[code].split('\n')
-    rain = __formatRain(forecast['rain'])
+    rain = _format_rain(forecast['rain'])
 
-    weather_section += weather_list[0] + forecast['weather'] + __formatSpacing(forecast['weather']) + '\n'
-    weather_section += weather_list[1] + forecast['currentTemp'] + __formatSpacing(forecast['currentTemp']) + '\n'
-    weather_section += weather_list[2] + forecast['wind'] + __formatSpacing(forecast['wind']) + '\n'
-    weather_section += weather_list[3] + forecast['humidity'] + __formatSpacing(forecast['humidity']) + '\n'
-    weather_section += weather_list[4] + rain + __formatSpacing(rain) + '\n'
+    weather_section += weather_list[0] + forecast['weather'] + _format_spacing(forecast['weather']) + '\n'
+    weather_section += weather_list[1] + forecast['currentTemp'] + _format_spacing(forecast['currentTemp']) + '\n'
+    weather_section += weather_list[2] + forecast['wind'] + _format_spacing(forecast['wind']) + '\n'
+    weather_section += weather_list[3] + forecast['humidity'] + _format_spacing(forecast['humidity']) + '\n'
+    weather_section += weather_list[4] + rain + _format_spacing(rain) + '\n'
 
     return weather_section
 
-def formatWeather(forecast):
+def format_weather(forecast):
+    """Uses forecast and weather code to help build section."""
     weather_codes = {
         '200': 'ThunderyShowers',
         '201': 'ThunderyShowers',
@@ -247,6 +249,6 @@ def formatWeather(forecast):
         '962': 'Unknown' # hurricane
     }
 
-    forecast = __buildWeatherSection(weather_codes[forecast['code']], forecast)
+    forecast = _build_weather_section(weather_codes[forecast['code']], forecast)
 
     return forecast

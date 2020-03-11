@@ -1,6 +1,6 @@
 '''
 
-Author: Michael Leone 
+Author: Michael Leone
 git: github.com/msleone90
 mail: msleone90@gmail.com
 Requirements: requests, BeautifulSoup, selenium, geocoder, click, json, time
@@ -10,20 +10,17 @@ Requirements: requests, BeautifulSoup, selenium, geocoder, click, json, time
 from bs4 import BeautifulSoup
 import click
 import geocoder
-import requests
-import json
-from datetime import datetime
 import newz.weather as weather
 import newz.articles as articles
-from newz.newzconfig import * 
-from newz.finance import getStockData
+from newz.newzconfig import *
+from newz.finance import get_stock_data
 
-def getLocation():
+def get_location():
       """ Uses geocoder library to retrieve city """
-      g = geocoder.ip('me')
-      return g.city
+      geolocation = geocoder.ip('me')
+      return geolocation.city
 
-def formatWeatherStockSection(forecast, stocks):
+def format_weather_stock_section(forecast, stocks):
       """ Combines weather and stock section into top half of newz """
       ws_section = ''
 
@@ -43,13 +40,13 @@ def formatWeatherStockSection(forecast, stocks):
       return ws_section
 
 @click.command()
-@click.argument('city', required = False)
+@click.argument('city', required=False)
 def run(city):
       """ Get local news straight to the terminal """
 
       # Pull in city information if not specified
       if not city:
-            city = getLocation()
+            city = get_location()
 
       # Print header
       print("""  
@@ -68,18 +65,18 @@ def run(city):
       forecast = weather.format_data(response)
 
       # Grab stock data
-      stock_data = getStockData()
+      stock_data = get_stock_data()
 
       # Pull in top three local news stories from Yahoo
-      stories = articles.getArticles(city)
+      stories = articles.get_articles(city)
 
       # Combines weather and stock sections
-      ws_section = formatWeatherStockSection(forecast, stock_data)
+      ws_section = format_weather_stock_section(forecast, stock_data)
 
       # Display newz 
       print("""
 -------------------------------------------------------------------------------------------------------------------------
-| Local Weather                  |  Finance                                                                             |
+| Local Weather                  | Finance                                                                              |
 -------------------------------------------------------------------------------------------------------------------------
 """+ws_section+"""
 -------------------------------------------------------------------------------------------------------------------------

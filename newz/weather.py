@@ -1,6 +1,6 @@
 """Module to build out weather section."""
 import requests
-from newz.forecast import formatWeather
+from newz.forecast import format_weather
 
 class ResponseNotFound(Exception):
     """Raised when a response is not returned from API call."""
@@ -10,13 +10,13 @@ def _check_rain(rain):
     """Checks if it is raining in searched city."""
     if "rain" not in rain:
         return ""
-    else:
-        return rain
+    return rain
 
 def get_weather(city, key):
     """Pulls response data from openweathermap API."""
+    url = 'http://api.openweathermap.org/data/2.5/weather?q='
     try:
-        url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=Imperial&appid=' + key
+        url += city + '&units=Imperial&appid=' + key
         response = requests.get(url)
     except ResponseNotFound:
         print("Unable to return a response")
@@ -38,5 +38,5 @@ def format_data(response):
         "rain": _check_rain(response)
     }
 
-    forecast = formatWeather(forecast)
+    forecast = format_weather(forecast)
     return forecast

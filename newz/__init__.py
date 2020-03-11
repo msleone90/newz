@@ -1,3 +1,4 @@
+"""Initializes project modules."""
 __all__ = [
     "articles",
     "finance",
