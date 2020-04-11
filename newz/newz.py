@@ -40,7 +40,7 @@ def format_weather_stock_section(forecast, stocks):
       return ws_section
 
 @click.command()
-@click.argument('city', required=False)
+@click.option('-c', '--city', help='City to receive news', required=False)
 def run(city):
       """ Get local news straight to the terminal """
 
