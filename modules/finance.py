@@ -1,7 +1,7 @@
 """Module to build out finance section."""
 import bs4
 from bs4 import BeautifulSoup
-from modules import newzconfig
+from modules.newzconfig import *
 import requests
 
 def _check_section_length(section):

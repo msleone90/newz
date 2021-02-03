@@ -8,4 +8,5 @@ import pytest
     "Sarasota"
 ])
 def test_get_articles(city):
-    assert articles.get_articles(city)
+    result = articles.get_articles(city)
+    assert result != ''
