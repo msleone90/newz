@@ -20,12 +20,12 @@ def BadCityFormatException():
       """Raised when city parameter contains non-alpha character"""
       pass
 
-def _get_location():
+def get_location():
       """ Uses geocoder library to retrieve city """
       geolocation = geocoder.ip('me')
       return geolocation.city
 
-def _validate_city(city):
+def validate_city(city):
       """ Checks if city value only contains alphabetic characters """
       pattern = re.compile('[a-zA-Z]+')
 
@@ -61,9 +61,9 @@ def run(city):
 
       # Pull in city information if not specified
       if not city:
-            city = _get_location()
+            city = get_location()
 
-      _validate_city(city)
+      validate_city(city)
 
       # Print header
       print("""  

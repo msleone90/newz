@@ -9,7 +9,7 @@ README = (HERE / "docs/README.md").read_text()
  
 setup(
     name="newz",
-    version="1.0.0",  # look up bumpversion when you start increasing this.
+    version="1.0.2",  # look up bumpversion when you start increasing this.
     description="Local news delivered straight to your terminal",
     long_description=README,
     long_description_content_type="text/markdown",

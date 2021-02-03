@@ -5,7 +5,7 @@ import pytest
     "Atlanta",
     "Austin",
     "Los Angeles",
-    "Charlotte"
+    "Sarasota"
 ])
 def test_get_articles(city):
     assert article.get_articles(city)
