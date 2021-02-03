@@ -11,7 +11,7 @@ html5lib==1.0.1
 idna==2.8
 kiwisolver==1.1.0
 lxml==4.6.2
-newz==0.0.1
+newz==1.0.0
 numpy==1.17.4
 pandas==0.25.3
 pandas-datareader==0.8.1
