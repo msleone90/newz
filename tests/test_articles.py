@@ -1,6 +1,11 @@
 import newz.articles as article
+import pytest
 
-def test_get_articles():
-    city = 'Atlanta'
-    result = article.get_articles(city)
-    assert result != ''
+@pytest.mark.parametrize("city", [
+    "Atlanta",
+    "Austin",
+    "Los Angeles",
+    "Charlotte"
+])
+def test_get_articles(city):
+    assert article.get_articles(city)

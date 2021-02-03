@@ -8,6 +8,7 @@ Requirements: requests, BeautifulSoup, selenium, geocoder, click, json, time
 '''
 
 from bs4 import BeautifulSoup
+import re
 import click
 import geocoder
 import newz.weather as weather
@@ -15,10 +16,24 @@ import newz.articles as articles
 from newz.newzconfig import *
 from newz.finance import get_stock_data
 
-def get_location():
+def BadCityFormatException():
+      """Raised when city parameter contains non-alpha character"""
+      pass
+
+def _get_location():
       """ Uses geocoder library to retrieve city """
       geolocation = geocoder.ip('me')
       return geolocation.city
+
+def _validate_city(city):
+      """ Checks if city value only contains alphabetic characters """
+      pattern = re.compile('[a-zA-Z]+')
+
+      try:
+            match = pattern.match(city)
+      except BadCityFormatException:
+            print("Error: city contains non-alphabetical character")
+      return
 
 def format_weather_stock_section(forecast, stocks):
       """ Combines weather and stock section into top half of newz """
@@ -46,7 +61,9 @@ def run(city):
 
       # Pull in city information if not specified
       if not city:
-            city = get_location()
+            city = _get_location()
+
+      _validate_city(city)
 
       # Print header
       print("""  
@@ -90,7 +107,7 @@ def run(city):
 """+str(stories[1][0])+"""                                                                                          
 |                                                                                                                       |
 """+str(stories[1][1])+"""                                                                                          
-|                                                                                           c                            |
+|                                                                                                                       |
 |-----------------------------------------------------------------------------------------------------------------------|
 """+str(stories[2][0])+"""                                                                                          
 |                                                                                                                       |
