@@ -1,6 +1,7 @@
 """Module to build out finance section."""
 import bs4
 from bs4 import BeautifulSoup
+from newz.newzconfig import *
 import requests
 
 def _check_section_length(section):
@@ -90,7 +91,7 @@ def get_stock_data():
     stock_item = {}
     stock_dict = {}
 
-    stock_request = requests.get('https://finance.yahoo.com/')
+    stock_request = requests.get(YAHOO_FINANCE_URL)
     soup = bs4.BeautifulSoup(stock_request.text, 'html5lib')
     stocks = soup.find_all('li', {'class': 'Bxz(bb)'})
 

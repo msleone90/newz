@@ -61,7 +61,7 @@ def run(city):
       print("\n Today's Newz: " + city)
 
       # Retrieve local forecast and format it
-      response = weather.get_weather(city, weather_key)
+      response = weather.get_weather(city, WEATHER_KEY)
       forecast = weather.format_data(response)
 
       # Grab stock data
@@ -90,7 +90,7 @@ def run(city):
 """+str(stories[1][0])+"""                                                                                          
 |                                                                                                                       |
 """+str(stories[1][1])+"""                                                                                          
-|                                                                                                                       |
+|                                                                                           c                            |
 |-----------------------------------------------------------------------------------------------------------------------|
 """+str(stories[2][0])+"""                                                                                          
 |                                                                                                                       |
