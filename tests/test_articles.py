@@ -1,4 +1,4 @@
-import newz.articles as article
+from modules import articles
 import pytest
 
 @pytest.mark.parametrize("city", [
@@ -8,4 +8,4 @@ import pytest
     "Sarasota"
 ])
 def test_get_articles(city):
-    assert article.get_articles(city)
+    assert articles.get_articles(city)

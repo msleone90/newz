@@ -11,10 +11,10 @@ from bs4 import BeautifulSoup
 import re
 import click
 import geocoder
-import newz.weather as weather
-import newz.articles as articles
-from newz.newzconfig import *
-from newz.finance import get_stock_data
+from modules import weather
+from modules import articles
+from modules.finance import get_stock_data
+from modules.newzconfig import *
 
 def BadCityFormatException():
       """Raised when city parameter contains non-alpha character"""

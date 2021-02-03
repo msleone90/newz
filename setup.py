@@ -1,5 +1,5 @@
 import pathlib
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -21,8 +21,8 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    packages=['newz'],
     include_package_data=True,
+    packages=find_packages(),
     entry_points={
         # you need a function with the name after ":" in your script:
         'console_scripts': ['newz = newz.newz:run'],

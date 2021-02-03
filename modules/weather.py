@@ -1,7 +1,7 @@
 """Module to build out weather section."""
 import requests
-from newz.forecast import format_weather
-from newz.newzconfig import *
+from modules.forecast import format_weather
+from modules.newzconfig import *
 
 class ResponseNotFound(Exception):
     """Raised when a response is not returned from API call."""

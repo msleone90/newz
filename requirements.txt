@@ -21,7 +21,7 @@ kiwisolver==1.1.0
 lxml==4.6.2
 matplotlib==3.1.1
 multitasking==0.0.9
-newz==1.0.0
+newz==1.0.2
 numpy==1.17.4
 packaging==20.8
 pandas==0.25.3
